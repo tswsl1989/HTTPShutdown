@@ -1,0 +1,3 @@
+A simple flask app that runs in the background and allows the connected pc to be rebooted or powered off
+
+Requires systemd and a thorough understanding that this will allow anyone to reboot or turn off the PC that the code is running on, with no authentication

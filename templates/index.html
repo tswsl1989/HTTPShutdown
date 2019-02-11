@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="row">
+	<div class='col-3'></div>
+	<div id="controls" class='col-6'>
+		<a href="/action/poweroff" type="button" class="btn btn-primary btn-lg btn-block py-3">Power off {{g.hostname|default("PC")}}</a>
+		<a href="/action/reboot"   type="button" class="btn btn-secondary btn-lg btn-block py-3">Restart {{g.hostname|default("PC")}}</a>
+	</div>
+	<div class='col-3'></div>
+</div>
+{% endblock %}

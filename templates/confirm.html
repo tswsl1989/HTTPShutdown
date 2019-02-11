@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} Confirmation Required {% endblock %}
+{% block content %}
+<div class="row">
+	<div class='col-3'></div>
+	<div id="controls" class='col-6'>
+		<div class="alert alert-danger">
+			<h2>Confirmation required</h2>
+			<p>To {{ g.acttext }} this machine, enter the verification code below:</p>
+			<h3 class="text-center"> {{g.vcode}} </h3>
+		</div>
+		<form method="POST">
+			<input type="hidden" name="vcode" value="{{ g.vcode }}">
+			<input type="hidden" name="action" value="{{ g.action }}">
+			<div class="form-group">
+			<label for="verify" class="form-label form-control-lg">Verification code</label>
+			<input class="form-control form-control-lg" type="number" name="verify" min="100000" max="999999" required  maxlength="6"></br>
+                        <button type="submit" class="btn btn-danger btn-lg btn-block py-3">Confirm</button>
+			<hr>
+			</div>
+		</form>
+	</div>
+	<div class='col-3'></div>
+</div>
+{% endblock %}
