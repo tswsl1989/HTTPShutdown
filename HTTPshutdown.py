@@ -18,7 +18,7 @@ def web_action(action=None):
         return redirect(url_for("web_root"))
 
     if not action in ["poweroff", "reboot"]:
-        flash(f"Action '{action}' is not valid", "error")
+        flash("Action '{}' is not valid".format(action), "error")
         return redirect(url_for("web_root"))
 
     from dbus import SystemBus, Interface
@@ -35,7 +35,7 @@ def web_action(action=None):
             assert request.form['vcode'] == request.form['verify']
             assert request.form['action'] == action
         except AssertionError:
-            flash(f"Action verification failed - no further action taken", "error")
+            flash("Action verification failed - no further action taken", "error")
             return redirect(url_for("web_root"))
 
         try:
