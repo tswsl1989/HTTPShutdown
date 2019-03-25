@@ -16,6 +16,7 @@ action_texts = { "poweroff": "shut down and turn off", "reboot": "shut down and 
 @app.route('/action')
 @app.route('/action/<action>', methods=['GET', 'POST'])
 def web_action(action=None):
+    global gfd
     if action is None:
         flash("No action specified", "error")
         return redirect(url_for("web_root"))
@@ -35,7 +36,7 @@ def web_action(action=None):
 
     if request.method == "POST":
         try:
-            assert session["vcode"] == request.form['verify']
+            assert session["vcode"] == int(request.form['verify'])
             assert request.form['action'] == action
         except AssertionError:
             flash("Action verification failed - no further action taken", "error")
@@ -51,6 +52,7 @@ def web_action(action=None):
             flash("Permission denied", "error")
             return redirect(url_for("web_root"))
 
+        gfd = pm.Inhibit("shutdown", "HTTPshutdown", "Finishing request", "delay")
         try:
             
             if action == "poweroff":
