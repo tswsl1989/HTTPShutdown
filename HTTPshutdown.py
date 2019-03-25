@@ -1,8 +1,11 @@
-from flask import Flask, render_template, flash, redirect, url_for, g, request
+from flask import Flask, render_template, flash, redirect, url_for, g, request, session
 
 import os
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", default=None)
+
+if app.secret_key is None:
+    raise Exception("App Secret Key not defined in environment")
 
 @app.route('/')
 def web_root():
@@ -32,7 +35,7 @@ def web_action(action=None):
 
     if request.method == "POST":
         try:
-            assert request.form['vcode'] == request.form['verify']
+            assert session["vcode"] == request.form['verify']
             assert request.form['action'] == action
         except AssertionError:
             flash("Action verification failed - no further action taken", "error")
@@ -49,8 +52,9 @@ def web_action(action=None):
             return redirect(url_for("web_root"))
 
         try:
+            
             if action == "poweroff":
-                flash("pm.PowerOff(False)")
+                pm.PowerOff(False)
 
             if action == "reboot":
                 pm.Reboot(False)
@@ -66,5 +70,6 @@ def web_action(action=None):
         g.action = action
         import random
         g.vcode = random.randrange(100000,999999)
+        session["vcode"] = g.vcode
         return render_template("confirm.html")
 
